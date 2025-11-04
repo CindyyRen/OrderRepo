@@ -1,0 +1,15 @@
+﻿services:
+  sqlserver_new:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_new
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    volumes:
+      - sqlserverdata_new:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  sqlserverdata_new:
