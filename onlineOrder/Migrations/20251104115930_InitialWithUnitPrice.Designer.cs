@@ -12,8 +12,8 @@ using onlineOrder.Data;
 namespace onlineOrder.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20251104080737_InitialSeed")]
-    partial class InitialSeed
+    [Migration("20251104115930_InitialWithUnitPrice")]
+    partial class InitialWithUnitPrice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace onlineOrder.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -61,9 +64,14 @@ namespace onlineOrder.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -98,18 +106,82 @@ namespace onlineOrder.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "智能手机",
-                            Name = "手机",
+                            Description = "5G 全面屏智能手机",
+                            Name = "智能手机",
                             Price = 2999m,
                             Stock = 10
                         },
                         new
                         {
                             Id = 2,
-                            Description = "蓝牙耳机",
-                            Name = "耳机",
+                            Description = "降噪入耳式蓝牙耳机",
+                            Name = "蓝牙耳机",
                             Price = 199m,
                             Stock = 50
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "轻薄便携办公本",
+                            Name = "笔记本电脑",
+                            Price = 6999m,
+                            Stock = 15
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "青轴背光机械键盘",
+                            Name = "机械键盘",
+                            Price = 399m,
+                            Stock = 30
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "静音无线鼠标",
+                            Name = "无线鼠标",
+                            Price = 99m,
+                            Stock = 40
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "27寸 2K IPS 显示器",
+                            Name = "显示器",
+                            Price = 1299m,
+                            Stock = 20
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "10.5英寸高清平板",
+                            Name = "平板电脑",
+                            Price = 2499m,
+                            Stock = 12
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "10000mAh 快充移动电源",
+                            Name = "移动电源",
+                            Price = 149m,
+                            Stock = 60
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "运动健康监测智能手表",
+                            Name = "智能手表",
+                            Price = 899m,
+                            Stock = 25
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Type-C 快充数据线",
+                            Name = "充电线",
+                            Price = 29m,
+                            Stock = 100
                         });
                 });
 
@@ -145,16 +217,32 @@ namespace onlineOrder.Migrations
                             Id = 2,
                             Email = "bob@test.com",
                             Username = "Bob"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "charlie@test.com",
+                            Username = "Charlie"
                         });
                 });
 
             modelBuilder.Entity("onlineOrder.Models.OrderItem", b =>
                 {
-                    b.HasOne("onlineOrder.Models.Order", null)
+                    b.HasOne("onlineOrder.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("onlineOrder.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("onlineOrder.Models.Order", b =>

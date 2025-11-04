@@ -1,12 +1,10 @@
-﻿namespace onlineOrder.Models
+﻿namespace onlineOrder.DTOs
 {
-    public class Order
+    public class OrderDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<OrderItem> Items { get; set; }
-        
+        public List<OrderItemDto> Items { get; set; }
     }
-
 }
